@@ -1,13 +1,13 @@
-package com.mwangi.cultivatewise
+package com.mwangi.cultivatewise.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import com.mwangi.cultivatewise.databinding.ActivityMainBinding
-import com.mwangi.cultivatewise.databinding.ActivitySignInBinding
+import com.mwangi.cultivatewise.database.CultivateDao
+import com.mwangi.cultivatewise.database.CultivateDb
 import com.mwangi.cultivatewise.databinding.ActivitySignUpBinding
+import com.mwangi.cultivatewise.model.User
 
 class SignUp : AppCompatActivity() {
     lateinit var binding: ActivitySignUpBinding
@@ -90,16 +90,14 @@ class SignUp : AppCompatActivity() {
         if (!error) {
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
 
+            fun registerUser(db:CultivateDb, username:String, email: String, password:String){
+                val userDao = db.cultivateDao()
+                val newUser = User(id=0, username, email, password )
+                userDao.insert(newUser)
+            }
+
             startActivity(Intent(this, SignIn::class.java))
-//            val registerRequest = RegisterRequest(
-//                firstName = firstName,
-//                lastName = lastName,
-//                phoneNumber = phone,
-//                email = email,
-//                password = password
-//            )
-//            binding.pbRegister.visibility = View.VISIBLE
-//            userViewModel.registerUser(registerRequest)
+
 
         }
     }

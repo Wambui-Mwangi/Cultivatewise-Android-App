@@ -1,10 +1,10 @@
-package com.mwangi.cultivatewise
+package com.mwangi.cultivatewise.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
+import com.mwangi.cultivatewise.database.CultivateDb
 import com.mwangi.cultivatewise.databinding.ActivitySignInBinding
 
 class SignIn : AppCompatActivity() {
@@ -21,7 +21,9 @@ class SignIn : AppCompatActivity() {
             signInUser()
         }
 
-        binding.tvSignup.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
+//        binding.tvSignup.setOnClickListener { startActivity(Intent(this, SignUp::class.java)) }
+
+
     }
 
     fun signInUser() {
@@ -39,20 +41,25 @@ class SignIn : AppCompatActivity() {
         if (password.isBlank()) {
             binding.tilpassword.error = "Password cannot be empty"
             error = true
-        }
-        else {
+        } else {
             binding.tilpassword.error = null
         }
 
         if (!error) {
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, Home::class.java))
-//            val logInUser = LoginRequest(
-//                email = email,
-//                password = password
-//            )
-//            binding.pbloginLoad.visibility = View.VISIBLE
-//            userViewModel.loginUser(logInUser)
+
+            fun signInUser(db:CultivateDb, email:String, password:String):Boolean{
+                val userDao = db.cultivateDao()
+                val user = userDao.getUserbyEmail(email)
+
+                if (user != null){
+                    return password == user.password
+                }
+
+                return false
+            }
+
         }
     }
 }

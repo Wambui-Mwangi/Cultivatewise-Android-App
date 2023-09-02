@@ -1,4 +1,4 @@
-package com.mwangi.cultivatewise
+package com.mwangi.cultivatewise.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
